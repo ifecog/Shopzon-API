@@ -127,3 +127,11 @@ def update_product(request, product_id):
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, _id=product_id)
+    product.delete()
+    
+    return Response('Product successfully deleted!')
