@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-
-from shop.models import Brand, Category, Product, Review
-from shop.serializers import ProductSerializer, ReviewSerializer
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+
+from shop.models import Brand, Category, Product, Review
+from shop.serializers import ProductSerializer
 
 # Create your views here.
 
@@ -15,19 +16,36 @@ def get_products(request):
     category_id = request.query_params.get('category')
     brand_id = request.query_params.get('brand')
     
-    products = Product.objects.all()
+    query = request.query_params.get('keyword')
+    if not query:
+        query = ''    
+        
+    products = Product.objects.filter(name__icontains=query)
     
     if category_id:
         category = get_object_or_404(Category, id=category_id)
         products = products.filter(category=category)
-
     if brand_id:
         brand = get_object_or_404(Brand, id=brand_id)
         products = products.filter(brand=brand)
+        
+    page = request.query_params.get('page')
+    paginator = Paginator(products, 8)
+    
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+        
+    if not page:
+        page = 1
+    page=int(page)
 
     serializer = ProductSerializer(products, many=True)
     
-    return Response(serializer.data)
+    return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
 
 @api_view(['GET'])
