@@ -19,21 +19,10 @@ class BrandSerializer(serializers.ModelSerializer):
         
         
 class ProductSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField(read_only=True)
-    brand = serializers.SerializerMethodField(read_only=True)
-    
+    category = CategorySerializer(read_only=True)
+    brand = BrandSerializer(read_only=True)    
     class Meta:
         model = Product
         fields = '__all__'
-        
-    def get_category(self, obj):
-        category = obj.category_set.all()
-        serializer = CategorySerializer(category, many=False)
-        return serializer.data
-    
-    def get_brand(self, obj):
-        brand = obj.brand_set.all()
-        serializer = CategorySerializer(brand, many=False)
-        return serializer.data
-    
+            
     

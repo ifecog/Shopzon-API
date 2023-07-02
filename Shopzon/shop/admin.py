@@ -31,12 +31,11 @@ class ProductAdmin(admin.ModelAdmin):
 
     thumbnail.short_description = 'photo'
 
-    list_display = ('_id', 'thumbnail', 'name', 'category', 'brand',
-                    'category', 'price')
+    list_display = ('_id', 'thumbnail', 'name', 'category', 'brand')
     list_display_links = ('name', 'thumbnail')
     search_fields = ['name', 'description', 'brand', 'category']
 
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandAdmin)
-admin.site.register(Product, CategoryAdmin)
+admin.site.register(Product, ProductAdmin)
