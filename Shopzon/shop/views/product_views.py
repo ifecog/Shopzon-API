@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 
-from shop.models import Brand, Category, Product
-from shop.serializers import ProductSerializer
+from shop.models import Brand, Category, Product, Review
+from shop.serializers import ProductSerializer, ReviewSerializer
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 # Create your views here.
@@ -43,3 +44,46 @@ def get_product_details(request, product_id):
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_product_review(request, product_id):
+    user = request.user
+    product = get_object_or_404(Product, _id=product_id)
+    data = request.data
+    
+    # 1. review already exists from user
+    already_exists = product.review_set.filter(user=user).exists()
+    
+    if already_exists:
+        message = {'detail': 'Product already reviewed by user'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    # 2. No rating or 0 rating
+    elif data['rating'] == 0:
+        message = {'detail': 'kindly select a rating'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    # create new review
+    else:
+        review = Review.objects.create(
+            product=product,
+            user=user,
+            name=user.first_name,
+            rating=data['rating'],
+            comment=data['comment']
+        )
+        reviews = product.review_set.all()
+        product.num_of_reviews = len(reviews)
+        
+        total = 0
+        for i in reviews:
+            total += i.rating
+            
+        product.rating = total/len(reviews)
+        product.save()
+        
+        return Response('Review Added')
+    
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
