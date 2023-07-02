@@ -32,6 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
     thumbnail.short_description = 'photo'
 
     list_display = ('_id', 'thumbnail', 'name', 'category', 'brand')
+    list_filter = ('category', 'brand')
     list_display_links = ('name', 'thumbnail')
     search_fields = ['name', 'description', 'brand', 'category']
 
