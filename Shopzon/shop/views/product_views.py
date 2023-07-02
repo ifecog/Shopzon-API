@@ -87,3 +87,25 @@ def create_product_review(request, product_id):
     
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
+def create_product(request):
+    user = request.user
+    category = Category.objects.create(
+        name='Test Category',
+        description='Test desctiption'
+    )
+    brand = Brand.objects.create(
+        name='Test Brand',
+        description='Test desctiption'
+    )
+    product = Product.objects.create(
+        user=user,
+        category=category,
+        brand=brand,
+        name='sample name',
+        description='',
+        price=0,
+        count_in_stock=0
+    )
+    serializer = ProductSerializer(product, many=False)
+    
+    return Response(serializer.data)
