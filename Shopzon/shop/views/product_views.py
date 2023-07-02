@@ -109,3 +109,21 @@ def create_product(request):
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_product(request, product_id):
+    product = get_object_or_404(Product, _id=product_id)
+    data = request.data
+    
+    # update fields
+    product.name=data['name'],
+    product.description=data['description'],
+    product.price=data['price'],
+    product.count_in_stock=data['count_in_stock']
+    
+    product.save()
+    
+    serializer = ProductSerializer(product, many=False)
+    
+    return Response(serializer.data)

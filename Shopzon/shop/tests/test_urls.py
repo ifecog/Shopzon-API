@@ -6,6 +6,7 @@ from shop.views.product_views import (
     get_product_details,
     create_product_review,
     create_product,
+    update_product,
 )
 
 class TestProductUrls(SimpleTestCase):
@@ -28,5 +29,9 @@ class TestProductUrls(SimpleTestCase):
     def test_create_product_url_is_resolved(self):
         url = reverse('create-product')
         self.assertEquals(resolve(url).func, create_product)
+        
+    def test_update_product_url_is_resolved(self):
+        url = reverse('update-product', args=['some-slug'])
+        self.assertEquals(resolve(url).func, update_product)
         
     
