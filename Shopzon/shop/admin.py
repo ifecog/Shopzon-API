@@ -38,6 +38,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('_id', 'name', 'rating', 'created_time')
+    list_display_links = ['name']
 
 
 admin.site.register(Category, CategoryAdmin)
