@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Brand, Product, Review, Order
+from .models import Category, Brand, Product, Review, Order, OrderItem
 from django.utils.html import format_html
 
 # Register your models here.
@@ -46,8 +46,19 @@ class OrderAdmin(admin.ModelAdmin):
     list_display_links = ['created_time']
 
 
+class OrderItemAdmin(admin.ModelAdmin):
+    def thumbnail(self, object):
+        return format_html('<img src="{}" width="40" style="border-radius: 50px;" />'.format(object.image.url))
+
+    thumbnail.short_description = 'photo'
+    
+    list_display = ('_id', 'thumbnail', 'product', 'name', 'qty', 'price')
+    list_display_links = ['thumbnail', 'name', 'product']
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
