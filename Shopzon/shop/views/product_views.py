@@ -63,6 +63,18 @@ def get_product_details(request, product_id):
     
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+def upload_image(request):
+    data = request.data
+    
+    product_id = data['product_id']
+    product = get_object_or_404(Product, _id=product_id)    
+    product.image = request.FILES.get('image')
+    product.save()
+    
+    return Response('Image successfully uploaded!')
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_product_review(request, product_id):
