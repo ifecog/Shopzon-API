@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import Category, Brand, Product, Review, Order, OrderItem
+from .models import (
+    Category, 
+    Brand, 
+    Product, 
+    Review, 
+    Order, 
+    OrderItem,
+    ShippingAddress
+)
 from django.utils.html import format_html
 
 # Register your models here.
@@ -56,9 +64,15 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display_links = ['thumbnail', 'name', 'product']
 
 
+class ShippingAddressAdmin(admin.ModelAdmin):
+    list_display = ('_id', 'country', 'city', 'postal_code')
+    list_display_links = ['country']
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
+admin.site.register(ShippingAddress, ShippingAddressAdmin)

@@ -92,3 +92,72 @@ class OrderItem(models.Model):
     def __str__(self):
         return self.name
 
+
+class ShippingAddress(models.Model):
+    state_choice = (
+        # Africa
+        ('NG', 'Nigeria'),
+        ('GH', 'Ghana'),
+        ('EG', 'Egypt'),
+        ('ZA', 'South Africa'),
+        ('ET', 'Ethiopia'),
+        ('DZ', 'Algeria'),
+
+        # Asia
+        ('CN', 'China'),
+        ('IN', 'India'),
+        ('JP', 'Japan'),
+        ('VN', 'Vietnam'),
+        ('TH', 'Thailand'),
+        ('KR', 'South Korea'),
+
+        # Europe
+        ('RU', 'Russia'),
+        ('DE', 'Germany'),
+        ('FR', 'France'),
+        ('GB', 'United Kingdom'),
+        ('IT', 'Italy'),
+        ('ES', 'Spain'),
+        ('PL', 'Poland'),
+        ('NL', 'Netherlands'),
+        ('BE', 'Belgium'),
+        ('SE', 'Sweden'),
+
+        # North America
+        ('US', 'United States'),
+        ('CA', 'Canada'),
+        ('MX', 'Mexico'),
+
+        # Oceania
+        ('AU', 'Australia'),
+        ('NZ', 'New Zealand'),
+        ('FJ', 'Fiji'),
+        ('PG', 'Papua New Guinea'),
+        
+        # South America
+        ('BR', 'Brazil'),
+        ('AR', 'Argentina'),
+        ('CO', 'Colombia'),
+        ('PE', 'Peru'),
+        ('CL', 'Chile'),
+        ('VE', 'Venezuela'),
+        ('EC', 'Ecuador'),
+        ('BO', 'Bolivia'),
+        ('PY', 'Paraguay'),
+        ('UY', 'Uruguay'),
+
+    )
+    order = models.OneToOneField(
+        Order, on_delete=models.CASCADE, null=True, blank=True)
+    country = models.CharField(choices=state_choice, max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    postal_code = models.CharField(max_length=200, null=True, blank=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.address
+
+    class Meta:
+        verbose_name = 'shipping address'
+        verbose_name_plural = 'shipping addresses'
