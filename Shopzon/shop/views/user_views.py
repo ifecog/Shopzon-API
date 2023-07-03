@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
@@ -37,6 +37,25 @@ def get_user_profile(request):
 
     return Response(serializer.data)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    user = request.user
+    serializer = UserSerializerWithToken(user, many=False)
+    
+    data = request.data
+    # update user fields
+    user.first_name=data['first_name'],
+    user.last_name=data['last_name'],
+    user.username=data['email'], 
+    user.email=data['email'], 
+    if data['password'] != '':
+        user.password=make_password(data['password'])
+    
+    user.save()
+
+    return Response(serializer.data)
+
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def get_users(request):
@@ -44,6 +63,35 @@ def get_users(request):
     serializer = UserSerializer(users, many=True)
 
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def get_user_by_id(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    data = request.data
+    
+    # update fields
+    user.first_name=data['first_name'],
+    user.last_name=data['last_name'],
+    user.email=data['email'],
+    user.is_staff=data['isAdmin']
+
+    user.save()
+
+    serializer = UserSerializer(user, many=False)
+
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_user_by_id(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    data = request.data
+    serializer = UserSerializer(user, many=False)
+    
+    return Response(serializer.data)
+
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
