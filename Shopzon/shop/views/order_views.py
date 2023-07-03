@@ -77,3 +77,45 @@ def get_orders(request):
 
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def get_order_by_id(request, order_id):
+    user = request.user
+    order = get_object_or_404(Order, _id=order_id)
+    
+    try:
+        if user.is_staff or order.user == user:
+            serializer = OrderSerializer(order, many=False)
+            return Response(serializer.data)
+        else:
+            message = {'detail': 'Not authorized to view order details'}
+            return Response(message, status=status.HTTP_401_UNAUTHORIZED)
+    
+    except:
+        message = {'detail': 'Order does not exist'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_order_to_paid(request, order_id):
+    order = get_object_or_404(Order, _id=order_id)
+    order.is_paid = True
+    order.payment_time = datetime.now()
+    order.save()
+    
+    return Response('Order Payment Confirmed')
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_order_to_delivered(request, order_id):
+    order = get_object_or_404(Order, _id=order_id)
+    order.is_delivered = True
+    order.delivery_time = datetime.now()
+    order.save()
+    
+    return Response('Order Delivery Confirmed')
+
+
