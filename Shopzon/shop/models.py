@@ -55,3 +55,25 @@ class Review(models.Model):
 
     def __str__(self):
         return str(self.rating)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    payment_method = models.CharField(max_length=200, null=True, blank=True)
+    tax_price = models.DecimalField(
+        max_digits=7, decimal_places=2, null=True, blank=True)
+    shipping_price = models.DecimalField(
+        max_digits=7, decimal_places=2, null=True, blank=True)
+    total_price = models.DecimalField(
+        max_digits=7, decimal_places=2, null=True, blank=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    is_paid = models.BooleanField(default=False)
+    payment_time = models.DateTimeField(
+        auto_now_add=False, null=True, blank=True)
+    is_delivered = models.BooleanField(default=False)
+    delivery_time = models.DateTimeField(
+        auto_now_add=False, null=True, blank=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.user.first_name

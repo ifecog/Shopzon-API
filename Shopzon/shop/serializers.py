@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .models import Brand, Category, Product, Review
+from .models import Brand, Category, Product, Review, Order
 
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, RefreshToken
@@ -91,3 +91,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             data[key] = value
             
         return data    
+    
+
