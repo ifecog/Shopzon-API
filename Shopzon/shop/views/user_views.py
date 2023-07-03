@@ -92,6 +92,13 @@ def update_user_by_id(request, user_id):
     
     return Response(serializer.data)
 
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def delete_user_by_id(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    return Response('User Deleted!')
+
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
