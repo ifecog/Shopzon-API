@@ -21,11 +21,11 @@ function Product({product}) {
         </Link>
 
         <Card.Title as='div'>
-          <strong>Category:{product.category}</strong>
+          <strong>Category: {product.category.name}</strong>
         </Card.Title>
 
         <Card.Title as='div'>
-          <strong>Brand:{product.brand}</strong>
+          <strong>Brand: {product.brand.name}</strong>
         </Card.Title>
 
         <Card.Text as='div'>

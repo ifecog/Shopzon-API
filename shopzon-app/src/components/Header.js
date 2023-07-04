@@ -1,13 +1,14 @@
 import React from 'react'
 import {Nav, Navbar, Container, NavDropdown} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
+import SearchBox from './SearchBox'
 
 function Header() {
   return (
     <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
-          <Navbar.Brand href='#home'>Shopzon</Navbar.Brand>
+          <Navbar.Brand href='/'>Shopzon</Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='me-auto'>
@@ -53,6 +54,9 @@ function Header() {
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
+          <div className='ml-auto'>
+            <SearchBox />
+          </div>
         </Container>
       </Navbar>
     </header>
