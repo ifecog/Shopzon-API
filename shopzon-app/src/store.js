@@ -8,6 +8,8 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import {
   productListReducer,
   productTopRatedReducer,
+  productDetailsReducer,
+  productCreateReviewReducer,
 } from './reducers/productReducers'
 import {userLoginReducer, userRegisterReducer} from './reducers/userReducers'
 
@@ -16,6 +18,8 @@ const reducer = combineReducers({
   productTopRated: productTopRatedReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  productDetails: productDetailsReducer,
+  productCreateReview: productCreateReviewReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
