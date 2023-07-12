@@ -15,6 +15,8 @@ from shop.serializers import ProductSerializer
 def get_products(request):
     category_id = request.query_params.get('category')
     brand_id = request.query_params.get('brand')
+    min_price = request.query_params.get('min_price')
+    max_price = request.query_params.get('max_price')
     
     query = request.query_params.get('keyword')
     if not query:
@@ -28,6 +30,8 @@ def get_products(request):
     if brand_id:
         brand = get_object_or_404(Brand, id=brand_id)
         products = products.filter(brand=brand)
+    if min_price and max_price:
+        products = products.filter(price__range=(min_price, max_price))
         
     page = request.query_params.get('page')
     paginator = Paginator(products, 8)
