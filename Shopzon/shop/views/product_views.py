@@ -20,7 +20,7 @@ def get_products(request):
     if not query:
         query = ''    
         
-    products = Product.objects.filter(name__icontains=query)
+    products = Product.objects.filter(name__icontains=query).order_by('-created_time')
     
     if category_id:
         category = get_object_or_404(Category, id=category_id)
@@ -121,7 +121,7 @@ def create_product(request):
     user = request.user
     category = Category.objects.create(
         name='Test Category',
-        description='Test desctiption'
+        description='Test description'
     )
     brand = Brand.objects.create(
         name='Test Brand',
