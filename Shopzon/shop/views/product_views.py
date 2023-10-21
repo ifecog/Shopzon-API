@@ -8,7 +8,6 @@ from rest_framework.response import Response
 
 from shop.models import Brand, Category, Product, Review
 from shop.serializers import ProductSerializer
-
 # Create your views here.
 
 @api_view(['GET'])
