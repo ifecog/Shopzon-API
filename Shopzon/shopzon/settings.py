@@ -203,8 +203,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Shopzpm API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'Shopzon API',
+    'DESCRIPTION': 'Shopzon API is a fully functional, robust and secure Ecommerce RESTful API built for mobile and web',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
