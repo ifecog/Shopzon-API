@@ -1,0 +1,1 @@
+ShopzonAPI is an e-commerce RESTful API developed using Python, JSON, Django, Django Rest Framework, AWS S3 Bucket, and PostgreSQL. It provides a comprehensive platform for building and managing online stores with features such as product listing, shopping cart functionality, user authentication, and order processing.
